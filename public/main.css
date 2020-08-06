@@ -1,0 +1,151 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap");
+
+:root {
+  --lightColor: #f3ecec;
+  --maxWidth: 600px;
+  --lightRedColor: #f19696;
+  --boxShadow: 0 10px 16px rgba(0, 0, 0, 0.5);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: var(--lightColor);
+  margin: 20px;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+.btn {
+  cursor: pointer;
+  padding: 5px 15px;
+  color: #fff;
+  background: red;
+  border: 0;
+  font-size: 17px;
+  /* width: 100%; */
+  /* border-radius: 10px; */
+}
+
+/*  */
+.chat {
+  max-width: var(--maxWidth);
+  margin: auto;
+}
+
+.header {
+  text-align: center;
+  padding: 10px;
+  background: red;
+  color: #fff;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+/* form */
+.main {
+  padding: 30px 40px;
+  background: var(--lightRedColor);
+}
+
+.main .form__control {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.main label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.main input[type="text"] {
+  font-size: 16px;
+  padding: 5px;
+  height: 40px;
+  width: 100%;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+}
+
+/* chat */
+
+.chat__container {
+  max-width: 900px;
+  background: #fff;
+  margin: 20px auto;
+  overflow: hidden;
+}
+
+.chat__header {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chat__main {
+  display: grid;
+  grid-template-columns: 1fr;
+  box-shadow: var(--boxShadow);
+}
+
+/* .chat__sidebar {
+  background: pink;
+  padding: 20px 20px 60px;
+  overflow-y: scroll;
+}
+
+.chat__sidebar ul li {
+  padding: 10px 0;
+} */
+
+.chat__messages {
+  padding: 30px;
+  max-height: 500px;
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.chat__messages .message {
+  padding: 10px;
+  margin-bottom: 15px;
+  background: #f19696;
+  border-radius: 10px;
+  color: grey;
+}
+
+.chat__messages .message span {
+  color: #777;
+}
+
+.chat__form {
+  display: flex;
+  justify-content: space-between;
+}
+
+.chat__form input {
+  width: 100%;
+  padding: 0;
+  outline: 0;
+  border: none;
+}
+
+.chat__form--container {
+  padding: 20px 30px;
+  background: #f3ecec;
+  box-shadow: var(--boxShadow);
+}
