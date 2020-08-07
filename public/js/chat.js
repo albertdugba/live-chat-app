@@ -58,20 +58,3 @@ const outputMessage = message => {
 
   document.querySelector(".chat__messages").appendChild(div);
 };
-
-// const outputRoomName = name => {
-//   rooName.innerText = name;
-// };
-// const outputRoomUsers = users => {
-//   userList.innerHTML = `${users
-//     .map(user => `<li>${user.username}</li>`)
-//     .join(" ")}`;
-// };
-
-// function insert(e) {
-//   const inserData = "INSERT INTO `chat`( `message`) VALUES ('')";
-//   db.query(inserData, (error, result) => {
-//     if (error) console.log(error);
-//     console.log(result);
-//   });
-// }

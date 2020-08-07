@@ -41,7 +41,10 @@ io.on("connection", socket => {
 
     socket.emit(
       "message",
-      formatMessage(botName, "Welcome to laronshalley customer support")
+      formatMessage(
+        botName,
+        `${username} you're welcome to laronshalley customer support`
+      )
     );
 
     // const inserData = "INSERT INTO `chat`( `message`) VALUES ('" +room "')";
