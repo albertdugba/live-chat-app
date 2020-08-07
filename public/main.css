@@ -38,6 +38,13 @@ a {
   /* border-radius: 10px; */
 }
 
+select {
+  font-size: 16px;
+  padding: 5px;
+  height: 40px;
+  width: 100%;
+}
+
 /*  */
 .chat {
   max-width: var(--maxWidth);
@@ -80,7 +87,6 @@ a {
 }
 
 /* chat */
-
 .chat__container {
   max-width: 900px;
   background: #fff;
@@ -99,16 +105,18 @@ a {
 
 .chat__main {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 3fr;
   box-shadow: var(--boxShadow);
 }
 
-/* .chat__sidebar {
-  background: pink;
+.chat__sidebar {
+  background: red;
   padding: 20px 20px 60px;
   overflow-y: scroll;
+  color: #fff;
+  font-size: 13px;
 }
-
+/*  
 .chat__sidebar ul li {
   padding: 10px 0;
 } */

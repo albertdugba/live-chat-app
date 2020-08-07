@@ -3,24 +3,95 @@ const path = require("path");
 const app = express();
 const http = require("http").createServer(app);
 const socket = require("socket.io");
+const mysql = require("mysql");
+const formatMessage = require("./utils/message");
 const io = socket(http);
+
+const {
+  userJoin,
+  getCurrentUser,
+  userLeave,
+  getRoomUsers,
+} = require("./utils/users");
+
+const db = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "users",
+});
+
+//
+
+// app.get("/", (req, res) => {
+//   res.send({ OK: 200 });
+// });
 
 app.use(express.static(path.join(__dirname, "public")));
 
+const botName = "Admin✅";
+
 io.on("connection", socket => {
-  socket.emit("message", "Welcome to laron shalley customer support");
+  socket.on("joinRoom", ({ username, room }) => {
+    const user = userJoin(socket.id, username, room);
 
-  // broadcast a message when a user connects
-  socket.broadcast.emit("message", " A user has connected to the live chat");
+    db.query("INSERT INTO `user` (`username`) VALUES (' " + username + " ')");
 
-  // disconnects when a user closes the tab
-  socket.on("disconnect", () => {
-    io.emit("message", "oops the user is disconnected");
+    socket.join(user.room);
+
+    socket.emit(
+      "message",
+      formatMessage(botName, "Welcome to laronshalley customer support")
+    );
+
+    // const inserData = "INSERT INTO `chat`( `message`) VALUES ('" +room "')";
+    // db.query(inserData, (error, result) => {
+    //   if (error) console.log(error);
+    //   console.log(result);
+    // });
+
+    // broadcast a message when a user connects
+    socket.broadcast
+      .to(user.room)
+      .emit(
+        "message",
+        formatMessage(
+          botName,
+          ` ${user.username} has connected to the live chat`
+        )
+      );
+
+    // get room users
+    io.to(user.room).emit("rootUsers", {
+      room: user.room,
+      users: getRoomUsers(room),
+    });
   });
 
   // listen for events from the client
   socket.on("chatMessage", msg => {
-    io.emit("message", msg);
+    const user = getCurrentUser(socket.id);
+    io.to(user.room).emit("message", formatMessage(user.username, msg));
+
+    db.query("INSERT INTO `chat` (`message`) VALUES (' " + msg + " ')");
+  });
+
+  // disconnects when a user closes the tab
+  socket.on("disconnect", () => {
+    const user = userLeave(socket.id);
+
+    if (user) {
+      io.to(user.room).emit(
+        "message",
+        formatMessage(botName, `oops ${user.username} is disconnected`)
+      );
+    }
+
+    // // get room users
+    // io.to(user.room).emit("rootUsers", {
+    //   room: user.room,
+    //   users: getRoomUsers(room),
+    // });
   });
 });
 
