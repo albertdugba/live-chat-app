@@ -4,7 +4,7 @@ const rooName = document.getElementById("room__name");
 const userList = document.getElementById("room");
 
 const socket = io();
-const serverUrl = "http:localhost:5000";
+const serverUrl = "http:localhost:5000/chat_messages";
 
 // get username and room from the url
 const { username, room } = Qs.parse(location.search, {
@@ -21,7 +21,8 @@ socket.emit("joinRoom", { username, room });
 
 fetch(serverUrl)
   .then(response => response.json())
-  .then(data => console.log(data));
+  .then(data => console.log(JSON.parse(data)))
+  .catch(error => console.log("Oops, something went wrong", error));
 
 socket.on("message", msg => {
   outputMessage(msg);

@@ -7,12 +7,7 @@ const mysql = require("mysql");
 const formatMessage = require("./utils/message");
 const io = socket(http);
 
-const {
-  userJoin,
-  getCurrentUser,
-  userLeave,
-  getRoomUsers,
-} = require("./utils/users");
+const { userJoin, getCurrentUser, userLeave } = require("./utils/users");
 
 const db = mysql.createConnection({
   host: "localhost",
@@ -21,11 +16,19 @@ const db = mysql.createConnection({
   database: "live_chat",
 });
 
-//
-
-// app.get("/", (req, res) => {
-//   res.send({ OK: 200 });
-// });
+app.use("/chat_messages", (req, res) => {
+  // chat messages
+  db.query("SELECT * FROM chat_messages", (error, result, field) => {
+    if (error) console.log("Error");
+    console.log(result);
+    res.end();
+  });
+  // users
+  db.query("SELECT * FROM users", (error, result, field) => {
+    if (error) throw error;
+    console.log(result);
+  });
+});
 
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -34,11 +37,11 @@ const botName = "Admin✅";
 io.on("connection", socket => {
   socket.on("joinRoom", ({ username, room }) => {
     const user = userJoin(socket.id, username, room);
-
+    // insert data into users table
     db.query("INSERT INTO users (username) VALUES (' " + username + " ')");
-
     socket.join(user.room);
 
+    // welcome message
     socket.emit(
       "message",
       formatMessage(
