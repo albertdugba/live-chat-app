@@ -18,7 +18,7 @@ const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
-  database: "users",
+  database: "live_chat",
 });
 
 //
@@ -35,7 +35,7 @@ io.on("connection", socket => {
   socket.on("joinRoom", ({ username, room }) => {
     const user = userJoin(socket.id, username, room);
 
-    db.query("INSERT INTO `user` (`username`) VALUES (' " + username + " ')");
+    db.query("INSERT INTO users (username) VALUES (' " + username + " ')");
 
     socket.join(user.room);
 
@@ -46,12 +46,6 @@ io.on("connection", socket => {
         `${username} you're welcome to laronshalley customer support`
       )
     );
-
-    // const inserData = "INSERT INTO `chat`( `message`) VALUES ('" +room "')";
-    // db.query(inserData, (error, result) => {
-    //   if (error) console.log(error);
-    //   console.log(result);
-    // });
 
     // broadcast a message when a user connects
     socket.broadcast
@@ -65,10 +59,10 @@ io.on("connection", socket => {
       );
 
     // get room users
-    io.to(user.room).emit("rootUsers", {
-      room: user.room,
-      users: getRoomUsers(room),
-    });
+    // io.to(user.room).emit("rootUsers", {
+    //   room: user.room,
+    //   users: getRoomUsers(room),
+    // });
   });
 
   // listen for events from the client
@@ -76,7 +70,7 @@ io.on("connection", socket => {
     const user = getCurrentUser(socket.id);
     io.to(user.room).emit("message", formatMessage(user.username, msg));
 
-    db.query("INSERT INTO `chat` (`message`) VALUES (' " + msg + " ')");
+    db.query("INSERT INTO chat_messages (messages) VALUES (' " + msg + " ')");
   });
 
   // disconnects when a user closes the tab

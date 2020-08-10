@@ -2,16 +2,9 @@ const chatForm = document.querySelector(".chat__form");
 const chatMessages = document.querySelector(".chat__messages");
 const rooName = document.getElementById("room__name");
 const userList = document.getElementById("room");
-// const mysql = require("mysql");
-
-// const db = mysql.createConnection({
-//   host: "localhost",
-//   user: "root",
-//   password: "",
-//   database: "users",
-// });
 
 const socket = io();
+const serverUrl = "http:localhost:5000";
 
 // get username and room from the url
 const { username, room } = Qs.parse(location.search, {
@@ -25,6 +18,10 @@ socket.emit("joinRoom", { username, room });
 //   outputRoomName(room);
 //   outputRoomUsers(users);
 // });
+
+fetch(serverUrl)
+  .then(response => response.json())
+  .then(data => console.log(data));
 
 socket.on("message", msg => {
   outputMessage(msg);
@@ -44,7 +41,6 @@ chatForm.addEventListener("submit", event => {
   // clear form field
   event.target.elements.msg.value = "";
   event.target.elements.msg.focus();
-  // insert();
 });
 
 const outputMessage = message => {
